@@ -41,7 +41,7 @@ namespace WpfAppSQLTermekek
         {
             try
             {
-                SQLkapcsolat = new MySql.Data.MySqlClient.MySqlConnection(kapcsolatLeiro);
+                SQLkapcsolat = new MySqlConnection(kapcsolatLeiro);
                 SQLkapcsolat.Open();
             }
             catch (Exception)
