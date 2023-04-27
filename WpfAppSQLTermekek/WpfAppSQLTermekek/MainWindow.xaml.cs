@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.IO;
 using MySql.Data.MySqlClient;
 
+
 namespace WpfAppSQLTermekek
 {
     /// <summary>
@@ -28,6 +29,11 @@ namespace WpfAppSQLTermekek
         public MainWindow()
         {
             InitializeComponent();
+            AdatbazisMegnyitas();
+            KategoriakBetoltese();
+            GyartokBetoltese();
+            TermekekBetolteseListaba();
+            AdatbazisLezarasa();
             
         }
 
@@ -64,7 +70,7 @@ namespace WpfAppSQLTermekek
                     eredmenyOlvaso.GetString("Gyártó"),
                     eredmenyOlvaso.GetString("Név"),
                     eredmenyOlvaso.GetInt32("Ár"),
-                    eredmenyOlvaso.GetInt32("Garidő")),
+                    eredmenyOlvaso.GetInt32("Garidő"));
 
                     termekek.Add(uj);
                     
@@ -116,7 +122,23 @@ namespace WpfAppSQLTermekek
         private void btnSzukit_Click(object sender, RoutedEventArgs e)
         {
             termekek.Clear();
-           // string SQLSzukitettLista = Szukitolekerdezes
+            string SQLSzukitettLista = SzukitoLekerdezesEloallitasa();
+
+            MySqlCommand SQLParancs = new MySqlCommand(SQLSzukitettLista, SQLkapcsolat);
+            MySqlDataReader eredmenyOlvaso = SQLParancs.ExecuteReader();
+
+            while (eredmenyOlvaso.Read())
+            {
+                Termek uj = new Termek(eredmenyOlvaso.GetString("Kategória"),
+                    eredmenyOlvaso.GetString("Gyártó"),
+                    eredmenyOlvaso.GetString("Név"),
+                    eredmenyOlvaso.GetInt32("Ár"),
+                    eredmenyOlvaso.GetInt32("Garidő"));
+
+                    termekek.Add(uj);
+            }
+            eredmenyOlvaso.Close();
+            dgTermekek.Items.Refresh();
         }
     }
 }

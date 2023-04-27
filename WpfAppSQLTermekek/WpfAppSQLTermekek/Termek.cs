@@ -23,6 +23,16 @@ namespace WpfAppSQLTermekek
             this.garido = garido;
         }
 
+        public String ToCSVString()
+        {
+            return $"{this.kategoria};{this.gyarto}; {this.nev}; {this.ar};{this.garido}";
+        }
+
+        public static String ToCSVString(Termek par)
+        {
+            return $"{par.kategoria};{par.gyarto}; {par.nev}; {par.ar};{par.garido}";
+        }
+
         public string Kategoria { get => kategoria; set => kategoria = value; }
         public string Gyarto { get => gyarto; set => gyarto = value; }
         public string Nev { get => nev; set => nev = value; }
