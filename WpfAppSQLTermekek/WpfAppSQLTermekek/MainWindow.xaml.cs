@@ -37,6 +37,41 @@ namespace WpfAppSQLTermekek
             
         }
 
+        private string SzukitoLekerdezesEloallitasa()
+        {
+            bool vanMarFeltetel = false;
+            string SQLSzukitettLista = "SELECT * FROM termékek";
+            if (cbGyarto.SelectedIndex > 0 || cbKategoria.SelectedIndex > 0 || txtTermek.Text != "")
+            {
+                SQLSzukitettLista += "WHERE ";
+            }
+            if (cbGyarto.SelectedIndex >0)
+            {
+                SQLSzukitettLista += $"gyártó='{cbGyarto.SelectedItem}'" ;
+                vanMarFeltetel = true;
+            }
+            if (cbKategoria.SelectedIndex > 0)
+            {
+                if (vanMarFeltetel)
+                {
+                    SQLSzukitettLista += " AND ";
+                }
+                SQLSzukitettLista += $"kategória='{cbKategoria.SelectedItem}'";
+                vanMarFeltetel = true;
+            }
+            if (txtTermek.Text != "")
+            {
+                if (vanMarFeltetel)
+                {
+                    SQLSzukitettLista += " AND ";
+                }
+                SQLSzukitettLista += $"név LIKE '%{txtTermek.Text}%'";
+
+            }
+
+            return (SQLSzukitettLista);
+        }
+
         private void AdatbazisMegnyitas()
         {
             try
