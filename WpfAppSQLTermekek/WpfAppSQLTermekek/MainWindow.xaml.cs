@@ -33,7 +33,7 @@ namespace WpfAppSQLTermekek
             KategoriakBetoltese();
             GyartokBetoltese();
             TermekekBetolteseListaba();
-            AdatbazisLezarasa();
+           // AdatbazisLezarasa();
             
         }
 
@@ -43,7 +43,7 @@ namespace WpfAppSQLTermekek
             string SQLSzukitettLista = "SELECT * FROM termékek";
             if (cbGyarto.SelectedIndex > 0 || cbKategoria.SelectedIndex > 0 || txtTermek.Text != "")
             {
-                SQLSzukitettLista += "WHERE ";
+                SQLSzukitettLista += " WHERE ";
             }
             if (cbGyarto.SelectedIndex >0)
             {
@@ -101,11 +101,11 @@ namespace WpfAppSQLTermekek
 
             while (eredmenyOlvaso.Read())
             {
-                Termek uj = new Termek(eredmenyOlvaso.GetString("Kategória"),
-                    eredmenyOlvaso.GetString("Gyártó"),
-                    eredmenyOlvaso.GetString("Név"),
-                    eredmenyOlvaso.GetInt32("Ár"),
-                    eredmenyOlvaso.GetInt32("Garidő"));
+                Termek uj = new Termek(eredmenyOlvaso.GetString(1),
+                    eredmenyOlvaso.GetString(2),
+                    eredmenyOlvaso.GetString(3),
+                    eredmenyOlvaso.GetInt32(4),
+                    eredmenyOlvaso.GetInt32(5));
 
                     termekek.Add(uj);
                     
@@ -116,14 +116,14 @@ namespace WpfAppSQLTermekek
 
         private void KategoriakBetoltese()
         {
-            string SQLKategoriakRendezve = "SELECT DISTINCT kategória FROM termékek ORDER BY kategória;";
+            string SQLKategoriakRendezve = "SELECT DISTINCT Kategória FROM termékek ORDER BY Kategória;";
             MySqlCommand SQLparancs = new MySqlCommand(SQLKategoriakRendezve, SQLkapcsolat) ;
             MySqlDataReader eredmenyOlvaso = SQLparancs.ExecuteReader();
 
             cbKategoria.Items.Add("- Nincs Megadva -");
             while (eredmenyOlvaso.Read())
             {
-                cbKategoria.Items.Add(eredmenyOlvaso.GetString("kategória"));
+                cbKategoria.Items.Add(eredmenyOlvaso.GetString(0));
             }
             eredmenyOlvaso.Close();
             cbKategoria.SelectedIndex = 0;
@@ -137,7 +137,7 @@ namespace WpfAppSQLTermekek
             cbGyarto.Items.Add("- Nincs Megadva -");
             while (eredmenyOlvaso.Read())
             {
-                cbGyarto.Items.Add(eredmenyOlvaso.GetString("Gyártó"));
+                cbGyarto.Items.Add(eredmenyOlvaso.GetString(0));
             }
             eredmenyOlvaso.Close();
             cbGyarto.SelectedIndex = 0;
@@ -164,13 +164,12 @@ namespace WpfAppSQLTermekek
 
             while (eredmenyOlvaso.Read())
             {
-                Termek uj = new Termek(eredmenyOlvaso.GetString("Kategória"),
-                    eredmenyOlvaso.GetString("Gyártó"),
-                    eredmenyOlvaso.GetString("Név"),
-                    eredmenyOlvaso.GetInt32("Ár"),
-                    eredmenyOlvaso.GetInt32("Garidő"));
-
-                    termekek.Add(uj);
+                Termek uj = new Termek(eredmenyOlvaso.GetString(1),
+                    eredmenyOlvaso.GetString(2),
+                    eredmenyOlvaso.GetString(3),
+                    eredmenyOlvaso.GetInt32(4),
+                    eredmenyOlvaso.GetInt32(5));
+                termekek.Add(uj);
             }
             eredmenyOlvaso.Close();
             dgTermekek.Items.Refresh();
